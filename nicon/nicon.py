@@ -9,6 +9,7 @@ WORK_DIR = '/home/asier/Desktop/nicon_test/workdir'
 
 
 # optional: mriqc
+# NOTE: OUTPUT -> better to put it's own folder. opj(OUTPUT_DIR, 'mriqc')
 
 # perform: fmriprep
 # perform extract series nilearn

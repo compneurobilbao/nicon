@@ -78,8 +78,26 @@ def correct_dwi():
     pass
 
 
-def run_ndmg():
-    # ndmg docker
+def run_mrtrix3():
+    # mrtrix3 docker
+
+    # NOTE: JUST subject number, without "sub-" prefix
+    # TODO: Atlas selection will be A THING 
+
+    command = [
+       'docker', 'run', '-i', '--rm',
+       '-v', DATA_DIR + ':/bids_dataset:ro',
+       '-v', OUTPUT_DIR + ':/outputs',
+       '-w', '/work',
+       'bids/mrtrix3_connectome:latest',
+       '/bids_dataset', '/outputs', 'participant',
+       '--participant_label', subject,
+       '--parcellation', atlas,
+    ]
+
+    for output in execute(command):
+        print(output)
+
     pass
 
 

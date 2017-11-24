@@ -7,7 +7,7 @@ from external_calls import (run_mriqc,
                             calc_fc_matrix,
                             run_ica_rsn,
                             correct_dwi,
-                            run_ndmg
+                            run_mrtrix3,
                             )
 
 

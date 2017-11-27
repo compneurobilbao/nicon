@@ -75,6 +75,10 @@ def run_ica_rsn():
 
 def correct_dwi():
     # nilearn + fsl ?¿
+    
+    # dipy: nlmeans_pipeline() in nipype
+    # fsl: ecc_pipeline() in nipype for eddy currents
+    # fsl: hmc_pipeline() in nipype for head motion
     pass
 
 

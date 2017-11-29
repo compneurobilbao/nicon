@@ -46,7 +46,7 @@ def run_nicon():
     if dwi:
         if dwi_correction:
             correct_dwi()
-        run_ndmg()
+        run_mrtrix3()
         
 
 if __name__ == "__main__":

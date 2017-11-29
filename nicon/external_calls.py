@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import subprocess
 
+from utils import correct_dwi_conmat
 
 def execute(cmd):
     popen = subprocess.Popen(cmd,
@@ -101,6 +102,8 @@ def run_mrtrix3():
 
     for output in execute(command):
         print(output)
+        
+    correct_dwi_conmat(atlas, subject)
 
     pass
 

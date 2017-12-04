@@ -47,7 +47,7 @@ def run_fmriprep():
            '-v', OUTPUT_DIR + ':/output',
            '-v', WORK_DIR + ':/work',
            '-w', '/work',
-           'poldracklab/fmriprep:latest',
+           'nicon/mrtrix3_connectome', 'fmriprep',
            '/data', '/output', 'participant',
            '--participant_label', subject,
            '-w', '/work', '--no-freesurfer', '--ignore', 'fieldmaps',
@@ -90,11 +90,11 @@ def run_mrtrix3():
     # TODO: Atlas selection will be A THING 
 
     command = [
-       'docker', 'run', '-i', '--rm',
+       'docker', 'exec', '-i', '--rm',
        '-v', DATA_DIR + ':/bids_dataset:ro',
        '-v', OUTPUT_DIR + ':/outputs',
        '-w', '/work',
-       'bids/mrtrix3_connectome:latest',
+       'nicon/mrtrix3_connectome:latest', 'run.py',
        '/bids_dataset', '/outputs', 'participant',
        '--participant_label', subject,
        '--parcellation', atlas,

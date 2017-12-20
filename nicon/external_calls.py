@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import subprocess
 
-# from utils import correct_dwi_conmat
-
-from config import (DATA_DIR,
+from nicon.utils import aal_atlas_to_subject_space
+from nicon.config import (DATA_DIR,
                     SUBJECT,
                     OUTPUT_DIR,
                     WORK_DIR,
@@ -45,8 +44,6 @@ def run_mriqc():
 def run_fmriprep():
 
     # TODO: check if FreeSurfer
-    # TODO: check template
-    # TODO: Load global variables
 
     command = [
            'docker', 'run', '-i', '--rm',
@@ -68,8 +65,11 @@ def run_fmriprep():
 
 def extract_timeseries():
     # nilearn
-    pass
-
+    
+    atlas_path = aal_atlas_to_subject_space(OUTPUT_DIR, SUBJECT)
+    
+    
+    return
 
 def calc_fc_matrix():
     # nilearn

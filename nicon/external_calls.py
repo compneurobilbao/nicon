@@ -6,6 +6,7 @@ from nicon.config import (DATA_DIR,
                     SUBJECT,
                     OUTPUT_DIR,
                     WORK_DIR,
+                    CONFOUNDS_ID,
                     )
 
 
@@ -64,10 +65,54 @@ def run_fmriprep():
 
 
 def extract_timeseries():
-    # nilearn
+    import pandas as pd
+    import os
+    from os.path import join as opj
+    import numpy as np
+    
+    from nilearn.input_data import NiftiLabelsMasker
+
     
     atlas_path = aal_atlas_to_subject_space(OUTPUT_DIR, SUBJECT)
     
+    preproc_data_path = opj(OUTPUT_DIR,
+                            'fmriprep',
+                            SUBJECT,
+                            'func')
+    
+    for file in os.listdir(preproc_data_path):
+        if file.endswith('preproc.nii.gz'):
+            preproc_file = opj(preproc_data_path, file)
+        if file.endswith('confounds.tsv'):
+            confounds_file = opj(preproc_data_path, file)        
+            
+    confounds = pd.read_csv(confounds_file,
+                            delimiter='\t', na_values='n/a').fillna(0)
+
+    confounds_matrix = confounds[CONFOUNDS_ID].as_matrix()
+
+    masker = NiftiLabelsMasker(labels_img=atlas_path,
+                               background_label=0, verbose=5,
+                               detrend=True, standardize=True,
+                               t_r=None, smoothing_fwhm=6,
+                               #TODO: TR should not be a variable
+                               low_pass=0.1, high_pass=0.01)
+    # 1.- Confound regression
+    confounds_matrix = confounds[CONFOUNDS_ID].as_matrix()
+
+    time_series = masker.fit_transform(preproc_file,
+                                       confounds=confounds_matrix)
+
+    # 2.- Scrubbing
+    # extract FramewiseDisplacement
+#    FD = confounds.iloc[:, 5].as_matrix()
+#    thres = 0.2
+#    time_series = scrubbing(time_series, FD, thres)
+
+    # Save time series 
+    # TODO: save better
+    np.savetxt(opj(OUTPUT_DIR, 'time_series_' + SUBJECT + '.txt'),
+               time_series)
     
     return
 

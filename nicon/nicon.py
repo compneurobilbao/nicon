@@ -10,13 +10,12 @@ from external_calls import (run_mriqc,
                             run_mrtrix3,
                             )
 
-
-# TODO: All this global variables should go in an external file
-DATA_DIR = '/home/asier/git/nicon/nicon/data'
-subject = 'sub-001'
-OUTPUT_DIR = '/home/asier/Desktop/nicon_test/output'
-WORK_DIR = '/home/asier/Desktop/nicon_test/workdir'
-INPUT_ATLAS_PATH = ''
+from config import (QC,
+                    FMRI,
+                    ICA_RSN,
+                    DWI,
+                    DWI_CORRECTION,
+                    )
 
 
 def run_nicon():
@@ -24,7 +23,7 @@ def run_nicon():
     # load global variables
 
     # optional: mriqc
-    if qc:
+    if QC:
         run_mriqc()
         # NOTE: OUTPUT -> better to put it's own folder.
         # opj(OUTPUT_DIR, 'mriqc')
@@ -34,17 +33,17 @@ def run_nicon():
     # extract series nilearn
     # calculate FC matrix
     # optional: ICA -> RSN (DMN...)
-    if fmri:
+    if FMRI:
         run_fmriprep()
         extract_timeseries()
         calc_fc_matrix()
-        if ica_rsn:
+        if ICA_RSN:
             run_ica_rsn()
 
     # optional: dwi motion correction
     # ndmg
-    if dwi:
-        if dwi_correction:
+    if DWI:
+        if DWI_CORRECTION:
             correct_dwi()
         run_mrtrix3()
         

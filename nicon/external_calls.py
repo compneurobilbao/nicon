@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 import subprocess
 
-from utils import correct_dwi_conmat
+# from utils import correct_dwi_conmat
+
+from config import (DATA_DIR,
+                    SUBJECT,
+                    OUTPUT_DIR,
+                    WORK_DIR,
+                    )
+
 
 def execute(cmd):
     popen = subprocess.Popen(cmd,
@@ -27,7 +34,7 @@ def run_mriqc():
            '-w', '/work',
            'poldracklab/mriqc:latest',
            '/data', '/output', 'participant',
-           '--participant_label', subject,
+           '--participant_label', SUBJECT,
            '-w', '/work', '--verbose-reports',
         ]
 
@@ -49,7 +56,7 @@ def run_fmriprep():
            '-w', '/work',
            'nicon/mrtrix3_connectome', 'fmriprep',
            '/data', '/output', 'participant',
-           '--participant_label', subject,
+           '--participant_label', SUBJECT,
            '-w', '/work', '--no-freesurfer', '--ignore', 'fieldmaps',
            '--output-space', 'template',
            '--template', 'MNI152NLin2009cAsym',
@@ -76,7 +83,7 @@ def run_ica_rsn():
 
 def correct_dwi():
     # nilearn + fsl ?¿
-    
+
     # dipy: nlmeans_pipeline() in nipype
     # fsl: ecc_pipeline() in nipype for eddy currents
     # fsl: hmc_pipeline() in nipype for head motion
@@ -87,7 +94,8 @@ def run_mrtrix3():
     # mrtrix3 docker
 
     # NOTE: JUST subject number, without "sub-" prefix
-    # TODO: Atlas selection will be A THING 
+    prefix = 'sub-'
+    subject = SUBJECT[len(prefix):] if SUBJECT.startswith(prefix) else SUBJECT
 
     command = [
        'docker', 'exec', '-i', '--rm',
@@ -97,15 +105,12 @@ def run_mrtrix3():
        'nicon/mrtrix3_connectome:latest', 'run.py',
        '/bids_dataset', '/outputs', 'participant',
        '--participant_label', subject,
-       '--parcellation', atlas,
+       '--parcellation', 'aal',
     ]
 
     for output in execute(command):
         print(output)
-        
-    correct_dwi_conmat(atlas, subject)
+
+    # correct_dwi_conmat(atlas, subject)
 
     pass
-
-
-

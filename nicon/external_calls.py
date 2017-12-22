@@ -148,11 +148,11 @@ def run_mrtrix3():
        'docker', 'run', '-i', '--rm',
        '-v', DATA_DIR + ':/bids_dataset:ro',
        '-v', OUTPUT_DIR + ':/outputs',
-       '-w', '/work',
-       'bids/mrtrix3_connectome', 'run.py',
+       'bids/mrtrix3_connectome',
        '/bids_dataset', '/outputs', 'participant',
        '--participant_label', subject,
        '--parcellation', 'aal',
+       '--preprocessed',
     ]
 
     for output in execute(command):

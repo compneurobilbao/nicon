@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 
-import numpy as np
 import nibabel as nib
 from os.path import join as opj
 from nilearn.image import resample_img
@@ -27,30 +26,29 @@ from nilearn.image import resample_img
 
 
 def aal_atlas_to_subject_space(OUTPUT_DIR, SUBJECT):
-    
+
     path = os.path.abspath(os.path.dirname(__file__))
     atlas_path = opj(path, 'atlas', 'aal_09c.nii.gz')
     preproc_data_path = opj(OUTPUT_DIR,
                             'fmriprep',
                             SUBJECT,
                             'func')
-    output_atlas_path = opj(OUTPUT_DIR, 
-                            'fmriprep', 
+    output_atlas_path = opj(OUTPUT_DIR,
+                            'fmriprep',
                             SUBJECT,
                             'func',
                             'aal_bold_space.nii.gz')
-            
+
     for file in os.listdir(preproc_data_path):
         if file.endswith('preproc.nii.gz'):
             preproc_file = opj(preproc_data_path, file)
-        
-    
+
     atlas_img = nib.load(atlas_path)
     fmri = nib.load(preproc_file)
     resampled_atlas = resample_img(atlas_img, target_affine=fmri.affine,
                                    interpolation='nearest')
     nib.save(resampled_atlas, output_atlas_path)
-    
+
     return output_atlas_path
 
 

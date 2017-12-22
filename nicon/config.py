@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-DATA_DIR = ''
+DATA_DIR = '/home/asier/git/nicon/nicon/data'
 SUBJECT = 'sub-01'
 OUTPUT_DIR = '/home/output_nicon'
 WORK_DIR = '/tmp/tmp_nicon'

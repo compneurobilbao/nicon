@@ -69,23 +69,25 @@ def extract_timeseries():
     import os
     from os.path import join as opj
     import numpy as np
-    
+    import nibabel as nib
+
     from nilearn.input_data import NiftiLabelsMasker
 
-    
     atlas_path = aal_atlas_to_subject_space(OUTPUT_DIR, SUBJECT)
-    
+
     preproc_data_path = opj(OUTPUT_DIR,
                             'fmriprep',
                             SUBJECT,
                             'func')
-    
+
     for file in os.listdir(preproc_data_path):
         if file.endswith('preproc.nii.gz'):
             preproc_file = opj(preproc_data_path, file)
         if file.endswith('confounds.tsv'):
-            confounds_file = opj(preproc_data_path, file)        
-            
+            confounds_file = opj(preproc_data_path, file)
+
+    TR = nib.load(preproc_file).shape[3]
+
     confounds = pd.read_csv(confounds_file,
                             delimiter='\t', na_values='n/a').fillna(0)
 
@@ -94,7 +96,7 @@ def extract_timeseries():
     masker = NiftiLabelsMasker(labels_img=atlas_path,
                                background_label=0, verbose=5,
                                detrend=True, standardize=True,
-                               t_r=None, smoothing_fwhm=6,
+                               t_r=TR, smoothing_fwhm=6,
                                #TODO: TR should not be a variable
                                low_pass=0.1, high_pass=0.01)
     # 1.- Confound regression
@@ -143,11 +145,11 @@ def run_mrtrix3():
     subject = SUBJECT[len(prefix):] if SUBJECT.startswith(prefix) else SUBJECT
 
     command = [
-       'docker', 'exec', '-i', '--rm',
+       'docker', 'run', '-i', '--rm',
        '-v', DATA_DIR + ':/bids_dataset:ro',
        '-v', OUTPUT_DIR + ':/outputs',
        '-w', '/work',
-       'erramuzpe/nicon_mrtrix3:latest', 'run.py',
+       'bids/mrtrix3_connectome', 'run.py',
        '/bids_dataset', '/outputs', 'participant',
        '--participant_label', subject,
        '--parcellation', 'aal',

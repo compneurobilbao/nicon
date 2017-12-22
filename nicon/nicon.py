@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 import sys
 
-from nicon.external_calls import (run_mriqc,
-                                  run_fmriprep,
-                                  extract_timeseries,
-                                  calc_fc_matrix,
-                                  run_ica_rsn,
-                                  correct_dwi,
-                                  run_mrtrix3,
-                                  )
+from external_calls import (run_mriqc,
+                            run_fmriprep,
+                            extract_timeseries,
+                            calc_fc_matrix,
+                            run_ica_rsn,
+                            correct_dwi,
+                            run_mrtrix3,
+                            )
 
-from nicon.config import (QC,
-                          FMRI,
-                          ICA_RSN,
-                          DWI,
-                          DWI_CORRECTION,
-                          )
+from config import (QC,
+                    FMRI,
+                    ICA_RSN,
+                    DWI,
+                    DWI_CORRECTION,
+                    )
 
 
 def run_nicon():

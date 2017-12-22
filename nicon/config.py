@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-DATA_DIR = ''
-SUBJECT = 'sub-001'
+DATA_DIR = '' # Please, fill this
+SUBJECT = 'sub-01'
 OUTPUT_DIR = '/home/output_nicon'
 WORK_DIR = '/tmp/tmp_nicon'
 

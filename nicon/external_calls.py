@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import subprocess
 
-from nicon.utils import aal_atlas_to_subject_space
-from nicon.config import (DATA_DIR,
+from utils import aal_atlas_to_subject_space
+from config import (DATA_DIR,
                     SUBJECT,
                     OUTPUT_DIR,
                     WORK_DIR,
@@ -52,7 +52,7 @@ def run_fmriprep():
            '-v', OUTPUT_DIR + ':/output',
            '-v', WORK_DIR + ':/work',
            '-w', '/work',
-           'nicon/mrtrix3_connectome', 'fmriprep',
+           'erramuzpe/nicon_mrtrix3:latest', 'fmriprep',
            '/data', '/output', 'participant',
            '--participant_label', SUBJECT,
            '-w', '/work', '--no-freesurfer', '--ignore', 'fieldmaps',
@@ -147,7 +147,7 @@ def run_mrtrix3():
        '-v', DATA_DIR + ':/bids_dataset:ro',
        '-v', OUTPUT_DIR + ':/outputs',
        '-w', '/work',
-       'nicon/mrtrix3_connectome:latest', 'run.py',
+       'erramuzpe/nicon_mrtrix3:latest', 'run.py',
        '/bids_dataset', '/outputs', 'participant',
        '--participant_label', subject,
        '--parcellation', 'aal',

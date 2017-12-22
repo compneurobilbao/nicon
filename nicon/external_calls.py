@@ -52,7 +52,7 @@ def run_fmriprep():
            '-v', OUTPUT_DIR + ':/output',
            '-v', WORK_DIR + ':/work',
            '-w', '/work',
-           'erramuzpe/nicon_mrtrix3:latest', 'fmriprep',
+           'poldracklab/fmriprep:latest', #'fmriprep',
            '/data', '/output', 'participant',
            '--participant_label', SUBJECT,
            '-w', '/work', '--no-freesurfer', '--ignore', 'fieldmaps',
